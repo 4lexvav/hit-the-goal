@@ -6,6 +6,7 @@ import (
 	"github.com/4lexvav/hit-the-goal/config"
 	"github.com/4lexvav/hit-the-goal/handlers"
 	"github.com/4lexvav/hit-the-goal/loader"
+	"github.com/4lexvav/hit-the-goal/logger"
 )
 
 func main() {
@@ -18,5 +19,8 @@ func main() {
 		Handler: handlers.NewRouter(),
 	}
 
-	server.ListenAndServe()
+	logger.Get().Infow("Listening...", "listening_url", config.Get().ListenURL)
+	if err := server.ListenAndServe(); err != nil {
+		logger.Get().Errorw("Failed to initialize HTTP server.", "error", err)
+	}
 }
