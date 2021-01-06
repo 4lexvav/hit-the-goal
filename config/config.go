@@ -14,9 +14,10 @@ func Load(filename string) error {
 
 type (
 	Config struct {
-		AppName   string `json:"app_name"   envconfig:"APP_NAME"   default:"hit-the-goal"`
-		ListenURL string `json:"listen_url" envconfig:"LISTEN_URL" default:":8080"`
-		LogPreset string `json:"log_preset" envconfig:"LOG_PRESET" default:"development"`
+		AppName            string `json:"app_name"   		   envconfig:"APP_NAME"   			default:"hit-the-goal"`
+		ListenURL          string `json:"listen_url" 		   envconfig:"LISTEN_URL" 			default:":8080"`
+		LogPreset          string `json:"log_preset" 		   envconfig:"LOG_PRESET" 			default:"development"`
+		PaginationMaxLimit int64  `json:"pagination_max_limit" envconfig:"PAGINATION_MAX_LIMIT" default:"100"`
 
 		Postgres Postgres `json:"postgres"`
 		Redis    Redis    `json:"redis"`
