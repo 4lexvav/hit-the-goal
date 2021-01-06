@@ -4,9 +4,9 @@ import "time"
 
 type Project struct {
 	ID          uint64 `json:"id"`
-	Name        string `jsong:"name"`
-	Description string `jsong:"description"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 
-	UpdatedAt time.Time `jsong:"updated_at"`
-	CreatedAt time.Time `jsong:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt time.Time `json:"created_at"`
 }
