@@ -9,7 +9,7 @@ import (
 func (srv service) Get(size, page int) (projects []models.Project, extErr exterrors.ExtError) {
 	projects, err := srv.projectsDao.Get(size, page)
 	if err != nil {
-		return nil, exterrors.NewInternalServerErrorError(errors.Wrap(err, "get projects"))
+		return nil, exterrors.NewInternalServerErrorError(errors.Wrap(err, "Failed at getting projects"))
 	}
 
 	return projects, nil

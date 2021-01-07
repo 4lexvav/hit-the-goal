@@ -8,6 +8,7 @@ import (
 	"github.com/4lexvav/hit-the-goal/services"
 	"github.com/4lexvav/hit-the-goal/store/repo"
 	"github.com/4lexvav/hit-the-goal/store/repo/postgres"
+	"github.com/4lexvav/hit-the-goal/validator"
 )
 
 const defaultConfigPath = "config.json"
@@ -19,6 +20,10 @@ func Load() {
 
 	if err := logger.Load(config.Get().LogPreset); err != nil {
 		log.Fatalf("Failed to load logger: %s", err.Error())
+	}
+
+	if err := validator.Load(); err != nil {
+		logger.Get().Fatalw("Failed to load validator", "error", err)
 	}
 
 	if err := postgres.Load(config.Get().Postgres, logger.Get()); err != nil {

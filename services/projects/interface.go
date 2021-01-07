@@ -7,4 +7,5 @@ import (
 
 type Service interface {
 	Get(size, page int) (projects []models.Project, extErr exterrors.ExtError)
+	Create(name, description string) (project models.Project, extErr exterrors.ExtError)
 }
