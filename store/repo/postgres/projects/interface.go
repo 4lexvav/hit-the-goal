@@ -10,7 +10,11 @@ type DAO interface {
 
 	Get(size, page int) (projects []models.Project, err error)
 
+	GetByID(id int) (project models.Project, err error)
+
 	Insert(project models.Project) (_ models.Project, err error)
 
-	Update(project models.Project) (_ models.Project, err error)
+	Upsert(project models.Project) (_ models.Project, err error)
+
+	Delete(id int) (err error)
 }

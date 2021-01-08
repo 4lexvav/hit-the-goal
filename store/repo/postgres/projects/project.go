@@ -29,6 +29,15 @@ func (dao projectsDAO) Get(size, page int) (projects []models.Project, err error
 	return projects, err
 }
 
+func (dao projectsDAO) GetByID(id int) (project models.Project, err error) {
+	err = dao.q.Model(&project).
+		Where("id = ?", id).
+		Returning("*").
+		Select()
+
+	return project, err
+}
+
 func (dao projectsDAO) Insert(project models.Project) (_ models.Project, err error) {
 	_, err = dao.q.Model(&project).
 		Returning("*").
@@ -37,11 +46,19 @@ func (dao projectsDAO) Insert(project models.Project) (_ models.Project, err err
 	return project, err
 }
 
-func (dao projectsDAO) Update(project models.Project) (_ models.Project, err error) {
+func (dao projectsDAO) Upsert(project models.Project) (_ models.Project, err error) {
 	_, err = dao.q.Model(&project).
-		OnConflict("(project) DO UPDATE").
+		OnConflict("(id) DO UPDATE").
 		Returning("*").
 		Insert()
 
 	return project, err
+}
+
+func (dao projectsDAO) Delete(id int) (err error) {
+	_, err = dao.q.Model((*models.Project)(nil)).
+		Where("id = ?", id).
+		Delete()
+
+	return err
 }
