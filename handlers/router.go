@@ -24,6 +24,12 @@ func NewRouter() *chi.Mux {
 	r.Route("/projects", func(r chi.Router) {
 		r.Get("/", projects.GetList)
 		r.Post("/", projects.Create)
+
+		r.Route("/{projectID}", func(r chi.Router) {
+			r.Get("/", projects.GetById)
+			r.Patch("/", projects.Update)
+			r.Delete("/", projects.Delete)
+		})
 	})
 
 	return r

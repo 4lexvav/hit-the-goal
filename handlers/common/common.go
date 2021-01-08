@@ -12,6 +12,7 @@ import (
 	"github.com/4lexvav/hit-the-goal/logger"
 	"github.com/4lexvav/hit-the-goal/validator"
 	exterrors "github.com/eugeneradionov/ext-errors"
+	"github.com/go-chi/chi"
 	v "github.com/go-playground/validator/v10"
 	"github.com/pkg/errors"
 )
@@ -123,4 +124,14 @@ func GetSizeAndPage(urlQuery url.Values) (_, _ int, extErr exterrors.ExtError) {
 	}
 
 	return int(size), int(page), nil
+}
+
+func GetID(r *http.Request, paramName string) (_ int, extErr exterrors.ExtError) {
+	idStr := chi.URLParam(r, "projectID")
+	id, err := strconv.ParseInt(idStr, 0, 64)
+	if err != nil {
+		extErr = exterrors.NewBadRequestError(errors.Wrapf(err, "failed to parse '%s' from url", paramName))
+	}
+
+	return int(id), nil
 }
