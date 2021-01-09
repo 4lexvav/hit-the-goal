@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/4lexvav/hit-the-goal/config"
-	"github.com/4lexvav/hit-the-goal/handlers"
+	handlers "github.com/4lexvav/hit-the-goal/http"
 	"github.com/4lexvav/hit-the-goal/loader"
 	"github.com/4lexvav/hit-the-goal/logger"
 )

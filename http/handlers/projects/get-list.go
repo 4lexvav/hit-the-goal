@@ -3,7 +3,7 @@ package projects
 import (
 	"net/http"
 
-	"github.com/4lexvav/hit-the-goal/handlers/common"
+	"github.com/4lexvav/hit-the-goal/http/common"
 	"github.com/4lexvav/hit-the-goal/services"
 )
 

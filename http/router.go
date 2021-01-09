@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/4lexvav/hit-the-goal/handlers/middlewares"
-	"github.com/4lexvav/hit-the-goal/handlers/projects"
+	"github.com/4lexvav/hit-the-goal/http/handlers/projects"
+	"github.com/4lexvav/hit-the-goal/http/middlewares"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 )
