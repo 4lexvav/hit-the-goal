@@ -3,6 +3,7 @@ package services
 import (
 	"sync"
 
+	"github.com/4lexvav/hit-the-goal/services/lists"
 	"github.com/4lexvav/hit-the-goal/services/projects"
 )
 
@@ -13,10 +14,15 @@ var (
 
 type serviceRepo struct {
 	projectsSrv projects.Service
+	listsSrv    lists.Service
 }
 
 func (srv serviceRepo) Projects() projects.Service {
 	return srvRepo.projectsSrv
+}
+
+func (srv serviceRepo) Lists() lists.Service {
+	return srvRepo.listsSrv
 }
 
 func Get() Service {
@@ -31,7 +37,16 @@ func Load() (err error) {
 			return
 		}
 
-		srvRepo = serviceRepo{projectsSrv: projectsSrv}
+		listsSrv, e := lists.New()
+		if e != nil {
+			err = e
+			return
+		}
+
+		srvRepo = serviceRepo{
+			projectsSrv: projectsSrv,
+			listsSrv:    listsSrv,
+		}
 	})
 
 	return err
