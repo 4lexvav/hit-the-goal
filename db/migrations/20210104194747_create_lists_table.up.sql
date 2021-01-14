@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS lists (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     status list_status NOT NULL DEFAULT 'ACTIVE',
-    position smallint NOT NULL DEFAULT 0
+    position smallint NOT NULL DEFAULT 0,
 
     project_id BIGINT REFERENCES projects(id) ON DELETE CASCADE,
 
