@@ -3,6 +3,7 @@ package repo
 import (
 	"sync"
 
+	"github.com/4lexvav/hit-the-goal/store/repo/postgres/lists"
 	"github.com/4lexvav/hit-the-goal/store/repo/postgres/projects"
 )
 
@@ -13,6 +14,7 @@ var (
 
 type postgresRepo struct {
 	projectsDao projects.DAO
+	listsDao    lists.DAO
 }
 
 func Get() Repo {
@@ -21,7 +23,10 @@ func Get() Repo {
 
 func Load() (err error) {
 	once.Do(func() {
-		repo = postgresRepo{projectsDao: projects.NewProjectsDao()}
+		repo = postgresRepo{
+			projectsDao: projects.NewProjectsDao(),
+			listsDao:    lists.NewListDao(),
+		}
 	})
 
 	return err
@@ -29,4 +34,8 @@ func Load() (err error) {
 
 func (r postgresRepo) Projects() projects.DAO {
 	return r.projectsDao
+}
+
+func (r postgresRepo) Lists() lists.DAO {
+	return r.listsDao
 }
