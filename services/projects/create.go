@@ -7,7 +7,7 @@ import (
 )
 
 func (srv service) Create(name string, description string) (project models.Project, extErr exterrors.ExtError) {
-	project = models.Project{Name: name, Description: description}
+	project = models.NewProject(name, description)
 	project, err := srv.projectsDao.Insert(project)
 	if err != nil {
 		return models.Project{}, exterrors.NewInternalServerErrorError(errors.Wrap(err, "Failed at project creation"))

@@ -15,3 +15,12 @@ type List struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+func NewList(name, status string, position int16, projectID int64) List {
+	return List{
+		Name:      name,
+		Status:    status,
+		Position:  position,
+		ProjectID: projectID,
+	}
+}

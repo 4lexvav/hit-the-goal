@@ -25,8 +25,7 @@ func Load() {
 	if err := validator.Load(); err != nil {
 		logger.Get().Fatalw("Failed to load validator", "error", err)
 	}
-
-	if err := postgres.Load(config.Get().Postgres, logger.Get()); err != nil {
+	if err := postgres.Load(config.Get().Postgres); err != nil {
 		logger.Get().Fatalw("Failed to connect to postgres", "error", err)
 	}
 

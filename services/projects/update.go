@@ -13,9 +13,9 @@ func (srv service) Update(id int, name string, description string) (project mode
 	}
 
 	project.Name = name
-	project.Description = description
+	project.Description.String = description
 
-	project, err := srv.projectsDao.Upsert(project)
+	project, err := srv.projectsDao.Update(project)
 	if err != nil {
 		return models.Project{}, exterrors.NewInternalServerErrorError(errors.Wrap(err, "Failed at updating project"))
 	}
