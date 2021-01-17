@@ -12,7 +12,6 @@ func NewRouter() *chi.Mux {
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		binBody, _ := json.Marshal("Hello World")
-
 		w.Write(binBody)
 	})
 

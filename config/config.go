@@ -25,7 +25,7 @@ type (
 	Postgres struct {
 		Host         string       `json:"host"          envconfig:"POSTGRES_HOST"          default:"localhost"`
 		Port         string       `json:"port"          envconfig:"POSTGRES_PORT"          default:"5432"`
-		Database     string       `json:"database"      envconfig:"POSTGRES_DATABASE"      default:"stocks"`
+		Database     string       `json:"database"      envconfig:"POSTGRES_DATABASE"      default:"goal"`
 		User         string       `json:"user"          envconfig:"POSTGRES_USER"          default:"postgres"`
 		Password     string       `json:"password"      envconfig:"POSTGRES_PASSWORD"      default:"12345"`
 		PoolSize     int          `json:"pool_size"     envconfig:"POSTGRES_POOL_SIZE"     default:"10"`

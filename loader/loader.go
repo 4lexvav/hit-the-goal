@@ -5,6 +5,7 @@ import (
 
 	"github.com/4lexvav/hit-the-goal/config"
 	"github.com/4lexvav/hit-the-goal/logger"
+	"github.com/4lexvav/hit-the-goal/store/repo"
 	"github.com/4lexvav/hit-the-goal/store/repo/postgres"
 )
 
@@ -19,7 +20,11 @@ func Load() {
 		log.Fatalf("Failed to load logger: %s", err.Error())
 	}
 
-	if err := postgres.Load(config.Get().Postgres, logger.Get()); err != nil {
+	if err := postgres.Load(config.Get().Postgres); err != nil {
 		logger.Get().Fatalw("Failed to connect to postgres", "error", err)
+	}
+
+	if err := repo.Load(); err != nil {
+		logger.Get().Fatalw("Failed at loading repository", "error", err)
 	}
 }

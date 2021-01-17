@@ -1,64 +1,108 @@
 package projects
 
 import (
-	"context"
+	"database/sql"
 
 	"github.com/4lexvav/hit-the-goal/models"
 	"github.com/4lexvav/hit-the-goal/store/repo/postgres"
 )
 
 type projectsDAO struct {
-	q *postgres.DBQuery
+	db *sql.DB
 }
 
 func NewProjectsDao() DAO {
-	return &projectsDAO{q: postgres.GetDB().QueryContext(context.Background())}
-}
-
-func (dao projectsDAO) WithTx(tx *postgres.DBQuery) DAO {
-	return &projectsDAO{q: tx}
+	return &projectsDAO{db: postgres.GetDB()}
 }
 
 func (dao projectsDAO) Get(size, page int) (projects []models.Project, err error) {
-	err = dao.q.Model(&projects).
-		Limit(size).
-		Offset(page).
-		Order("created_at ASC").
-		Select()
+	stmt := "SELECT id, name, description, updated_at, created_at FROM projects ORDER BY created_at ASC LIMIT $1 OFFSET $2"
+	rows, err := dao.db.Query(stmt, size, size*(page-1))
+	if err != nil {
+		return projects, err
+	}
+	defer rows.Close()
 
-	return projects, err
+	for rows.Next() {
+		var proj models.Project
+		if err = rows.Scan(&proj.ID, &proj.Name, &proj.Description, &proj.UpdatedAt, &proj.CreatedAt); err != nil {
+			return projects, err
+		}
+
+		projects = append(projects, proj)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return projects, err
+	}
+
+	return projects, nil
 }
 
 func (dao projectsDAO) GetByID(id int) (project models.Project, err error) {
-	err = dao.q.Model(&project).
-		Where("id = ?", id).
-		Returning("*").
-		Select()
+	stmt := "SELECT id, name, description, updated_at, created_at FROM projects WHERE id = $1"
+	if err = dao.db.QueryRow(stmt, id).Scan(&project.ID, &project.Name, &project.Description, &project.UpdatedAt, &project.CreatedAt); err != nil {
+		return models.Project{}, err
+	}
 
-	return project, err
+	return project, nil
 }
 
 func (dao projectsDAO) Insert(project models.Project) (_ models.Project, err error) {
-	_, err = dao.q.Model(&project).
-		Returning("*").
-		Insert()
+	stmt := "INSERT INTO projects(name, description) VALUES($1, $2) RETURNING id, updated_at, created_at"
+	if err = dao.db.QueryRow(stmt, project.Name, project.Description).Scan(&project.ID, &project.UpdatedAt, &project.CreatedAt); err != nil {
+		return models.Project{}, err
+	}
 
-	return project, err
+	/* stmt, err := dao.db.Prepare("INSERT INTO projects(name, description) VALUES($1, $2)")
+	if err != nil {
+		return models.Project{}, err
+	}
+
+	res, err := stmt.Exec(project.Name, project.Description.String)
+	if err != nil {
+		return models.Project{}, err
+	}
+
+	project.ID, err = res.LastInsertId()
+	if err != nil {
+		return project, err
+	} */
+
+	return project, nil
 }
 
-func (dao projectsDAO) Upsert(project models.Project) (_ models.Project, err error) {
-	_, err = dao.q.Model(&project).
-		OnConflict("(id) DO UPDATE").
-		Returning("*").
-		Insert()
+func (dao projectsDAO) Update(project models.Project) (_ models.Project, err error) {
+	stmt := "UPDATE projects SET name = $1, description = $2 WHERE id = $3 RETURNING updated_at, created_at"
+	if err = dao.db.QueryRow(stmt, project.Name, project.Description, project.ID).Scan(&project.UpdatedAt, &project.CreatedAt); err != nil {
+		return models.Project{}, err
+	}
 
-	return project, err
+	return project, nil
+	/* stmt, err := dao.db.Prepare("UPDATE projects SET name = $1, description = $2 WHERE id = $3")
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(project.Name, project.Description.String, project.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil */
 }
 
 func (dao projectsDAO) Delete(id int) (err error) {
-	_, err = dao.q.Model((*models.Project)(nil)).
-		Where("id = ?", id).
-		Delete()
+	stmt, err := dao.db.Prepare("DELETE FROM projects WHERE id = $1")
+	if err != nil {
+		return err
+	}
 
-	return err
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
