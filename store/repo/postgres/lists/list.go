@@ -1,18 +1,20 @@
 package lists
 
 import (
-	"database/sql"
-
 	"github.com/4lexvav/hit-the-goal/models"
 	"github.com/4lexvav/hit-the-goal/store/repo/postgres"
 )
 
 type listsDAO struct {
-	db *sql.DB
+	db *postgres.DBQuery
 }
 
 func NewListDao() DAO {
-	return &listsDAO{db: postgres.GetDB()}
+	return &listsDAO{db: postgres.GetDB().NewQuery()}
+}
+
+func (dao listsDAO) WithTx(tx *postgres.DBQuery) DAO {
+	return &listsDAO{db: tx}
 }
 
 func (dao listsDAO) Insert(list models.List) (_ models.List, err error) {
