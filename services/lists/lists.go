@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/4lexvav/hit-the-goal/store/repo"
+	"github.com/4lexvav/hit-the-goal/store/repo/postgres"
 	"github.com/4lexvav/hit-the-goal/store/repo/postgres/lists"
 )
 
@@ -22,4 +23,8 @@ func New() (_ Service, err error) {
 	})
 
 	return srv, err
+}
+
+func (srv service) WithTx(tx *postgres.DBQuery) Service {
+	return service{listsDao: repo.Get().Lists().WithTx(tx)}
 }
