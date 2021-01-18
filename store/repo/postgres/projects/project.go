@@ -1,18 +1,20 @@
 package projects
 
 import (
-	"database/sql"
-
 	"github.com/4lexvav/hit-the-goal/models"
 	"github.com/4lexvav/hit-the-goal/store/repo/postgres"
 )
 
 type projectsDAO struct {
-	db *sql.DB
+	db *postgres.DBQuery
 }
 
 func NewProjectsDao() DAO {
-	return &projectsDAO{db: postgres.GetDB()}
+	return &projectsDAO{db: postgres.GetDB().NewQuery()}
+}
+
+func (dao projectsDAO) WithTx(tx *postgres.DBQuery) DAO {
+	return &projectsDAO{db: tx}
 }
 
 func (dao projectsDAO) Get(size, page int) (projects []models.Project, err error) {

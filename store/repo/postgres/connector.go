@@ -10,9 +10,13 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type Postgres struct {
+	db *sql.DB
+}
+
 var (
-	db   *sql.DB
-	once = &sync.Once{}
+	postgres *Postgres
+	once     = &sync.Once{}
 )
 
 func Load(cfg config.Postgres) error {
@@ -26,12 +30,14 @@ func Load(cfg config.Postgres) error {
 
 		newDB.SetMaxOpenConns(cfg.PoolSize)
 
-		db = newDB
+		postgres = &Postgres{
+			db: newDB,
+		}
 	})
 
-	return db.Ping()
+	return postgres.db.Ping()
 }
 
-func GetDB() *sql.DB {
-	return db
+func GetDB() *Postgres {
+	return postgres
 }
