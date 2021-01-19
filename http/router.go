@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/4lexvav/hit-the-goal/http/handlers/lists"
 	"github.com/4lexvav/hit-the-goal/http/handlers/projects"
 	"github.com/4lexvav/hit-the-goal/http/middlewares"
 	"github.com/go-chi/chi"
@@ -21,6 +22,11 @@ func NewRouter() *chi.Mux {
 			r.Get("/", projects.GetById)
 			r.Patch("/", projects.Update)
 			r.Delete("/", projects.Delete)
+
+			r.Route("/lists", func(r chi.Router) {
+				r.Get("/", lists.GetList)
+				r.Post("/", lists.Create)
+			})
 		})
 	})
 

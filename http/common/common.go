@@ -131,6 +131,7 @@ func GetID(r *http.Request, paramName string) (_ int, extErr exterrors.ExtError)
 	id, err := strconv.ParseInt(idStr, 0, 64)
 	if err != nil {
 		extErr = exterrors.NewBadRequestError(errors.Wrapf(err, "failed to parse '%s' from url", paramName))
+		return
 	}
 
 	return int(id), nil

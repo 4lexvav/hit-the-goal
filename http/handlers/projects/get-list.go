@@ -22,5 +22,10 @@ func GetList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if len(projects) == 0 {
+		common.SendResponse(w, http.StatusOK, []string{})
+		return
+	}
+
 	common.SendResponse(w, http.StatusOK, projects)
 }
