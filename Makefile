@@ -4,13 +4,13 @@ MIGRATE=migrate -path db/migrations -database postgres://postgres:secret@localho
 
 all: db-up migrate-up
 
-up-db:
+db-up:
 	docker run --name goal-db -v $(PWD)/docker/postgres/init.sh:/docker-entrypoint-initdb.d/init.sh -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=secret -d postgres:13-alpine
 
-create-db:
+db-create:
 	docker exec -it goal-db createdb --username=postgres --owner=postgres goal
 
-drop-db:
+db-drop:
 	docker exec -it goal-db dropdb --username=postgres goal
 
 migrate-make:
