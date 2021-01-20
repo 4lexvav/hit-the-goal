@@ -127,7 +127,7 @@ func GetSizeAndPage(urlQuery url.Values) (_, _ int, extErr exterrors.ExtError) {
 }
 
 func GetID(r *http.Request, paramName string) (_ int, extErr exterrors.ExtError) {
-	idStr := chi.URLParam(r, "projectID")
+	idStr := chi.URLParam(r, paramName)
 	id, err := strconv.ParseInt(idStr, 0, 64)
 	if err != nil {
 		extErr = exterrors.NewBadRequestError(errors.Wrapf(err, "failed to parse '%s' from url", paramName))

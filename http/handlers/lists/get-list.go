@@ -8,7 +8,7 @@ import (
 )
 
 func GetList(w http.ResponseWriter, r *http.Request) {
-	id, extErr := common.GetID(r, "ProjectID")
+	id, extErr := common.GetID(r, "projectID")
 	if extErr != nil {
 		common.SendExtError(w, extErr)
 	}
