@@ -19,7 +19,7 @@ func main() {
 		Handler: handlers.NewRouter(),
 	}
 
-	logger.Get().Infow("Listening...", "listening_url", config.Get().Port)
+	logger.Get().Infow("Listening on port...", "port", config.Get().Port)
 	if err := server.ListenAndServe(); err != nil {
 		logger.Get().Errorw("Failed to initialize HTTP server.", "error", err)
 	}
