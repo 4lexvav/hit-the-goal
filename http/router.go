@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/4lexvav/hit-the-goal/http/handlers/comments"
 	"github.com/4lexvav/hit-the-goal/http/handlers/lists"
 	"github.com/4lexvav/hit-the-goal/http/handlers/projects"
 	"github.com/4lexvav/hit-the-goal/http/handlers/tasks"
@@ -18,6 +19,7 @@ func NewRouter() *chi.Mux {
 	addProjectRoutes(r)
 	addListRoutes(r)
 	addTaskRoutes(r)
+	addCommentRoutes(r)
 
 	return r
 }
@@ -36,7 +38,7 @@ func addProjectRoutes(r chi.Router) {
 }
 
 func addListRoutes(r chi.Router) {
-	r.Route("/projects/{{projectID}}/lists", func(r chi.Router) {
+	r.Route("/projects/{projectID}/lists", func(r chi.Router) {
 		r.Get("/", lists.GetList)
 		r.Post("/", lists.Create)
 
@@ -57,6 +59,18 @@ func addTaskRoutes(r chi.Router) {
 			r.Get("/", tasks.GetById)
 			r.Patch("/", tasks.Update)
 			r.Delete("/", tasks.Delete)
+		})
+	})
+}
+
+func addCommentRoutes(r chi.Router) {
+	r.Route("/tasks/{taskID}/comments", func(r chi.Router) {
+		r.Get("/", comments.GetList)
+		r.Post("/", comments.Create)
+
+		r.Route("/{commentID}", func(r chi.Router) {
+			r.Patch("/", comments.Update)
+			r.Delete("/", comments.Delete)
 		})
 	})
 }

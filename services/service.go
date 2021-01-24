@@ -3,6 +3,7 @@ package services
 import (
 	"sync"
 
+	"github.com/4lexvav/hit-the-goal/services/comments"
 	"github.com/4lexvav/hit-the-goal/services/lists"
 	"github.com/4lexvav/hit-the-goal/services/projects"
 	"github.com/4lexvav/hit-the-goal/services/tasks"
@@ -17,6 +18,7 @@ type serviceRepo struct {
 	projectsSrv projects.Service
 	listsSrv    lists.Service
 	tasksSrv    tasks.Service
+	commentsSrv comments.Service
 }
 
 func (srv serviceRepo) Projects() projects.Service {
@@ -29,6 +31,10 @@ func (srv serviceRepo) Lists() lists.Service {
 
 func (srv serviceRepo) Tasks() tasks.Service {
 	return srvRepo.tasksSrv
+}
+
+func (srv serviceRepo) Comments() comments.Service {
+	return srvRepo.commentsSrv
 }
 
 func Get() Service {
@@ -55,10 +61,17 @@ func Load() (err error) {
 			return
 		}
 
+		commentsSrv, e := comments.New()
+		if e != nil {
+			err = e
+			return
+		}
+
 		srvRepo = serviceRepo{
 			projectsSrv: projectsSrv,
 			listsSrv:    listsSrv,
 			tasksSrv:    tasksSrv,
+			commentsSrv: commentsSrv,
 		}
 	})
 
