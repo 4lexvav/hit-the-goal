@@ -15,11 +15,11 @@ func main() {
 
 	// Listen HTTP requests
 	server := &http.Server{
-		Addr:    config.Get().ListenURL,
+		Addr:    ":" + config.Get().Port,
 		Handler: handlers.NewRouter(),
 	}
 
-	logger.Get().Infow("Listening...", "listening_url", config.Get().ListenURL)
+	logger.Get().Infow("Listening...", "listening_url", config.Get().Port)
 	if err := server.ListenAndServe(); err != nil {
 		logger.Get().Errorw("Failed to initialize HTTP server.", "error", err)
 	}
