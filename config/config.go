@@ -14,9 +14,9 @@ func Load(filename string) error {
 
 type (
 	Config struct {
-		AppName            string `json:"app_name"   		   envconfig:"APP_NAME"   			default:"hit-the-goal"`
-		ListenURL          string `json:"listen_url" 		   envconfig:"LISTEN_URL" 			default:":8080"`
-		LogPreset          string `json:"log_preset" 		   envconfig:"LOG_PRESET" 			default:"development"`
+		AppName            string `json:"app_name"             envconfig:"APP_NAME"             default:"hit-the-goal"`
+		ListenURL          string `json:"listen_url"           envconfig:"LISTEN_URL"           default:":8080"`
+		LogPreset          string `json:"log_preset"           envconfig:"LOG_PRESET"           default:"development"`
 		PaginationMaxLimit int64  `json:"pagination_max_limit" envconfig:"PAGINATION_MAX_LIMIT" default:"100"`
 
 		Postgres Postgres `json:"postgres"`
@@ -28,7 +28,8 @@ type (
 		Port         string       `json:"port"          envconfig:"POSTGRES_PORT"          default:"5432"`
 		Database     string       `json:"database"      envconfig:"POSTGRES_DATABASE"      default:"goal"`
 		User         string       `json:"user"          envconfig:"POSTGRES_USER"          default:"postgres"`
-		Password     string       `json:"password"      envconfig:"POSTGRES_PASSWORD"      default:"12345"`
+		Password     string       `json:"password"      envconfig:"POSTGRES_PASSWORD"      default:"secret"`
+		Sslmode      string       `json:"sslmode"       envconfig:"POSTGRES_SSLMODE"       default:"disable"`
 		PoolSize     int          `json:"pool_size"     envconfig:"POSTGRES_POOL_SIZE"     default:"10"`
 		MaxRetries   int          `json:"max_retries"   envconfig:"POSTGRES_MAX_RETRIES"   default:"5"`
 		ReadTimeout  cfg.Duration `json:"read_timeout"  envconfig:"POSTGRES_READ_TIMEOUT"  default:"10s"`

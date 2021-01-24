@@ -21,7 +21,8 @@ var (
 
 func Load(cfg config.Postgres) error {
 	once.Do(func() {
-		dataSourceName := fmt.Sprintf("dbname=%s user=%s password=%s host=%s port=%s sslmode=disable", cfg.Database, cfg.User, cfg.Password, cfg.Host, cfg.Port)
+		dataSourceName := fmt.Sprintf("dbname=%s user=%s password=%s host=%s port=%s sslmode=%s", cfg.Database, cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Sslmode)
+		logger.Get().Infow("Connection", "conn", dataSourceName)
 		newDB, err := sql.Open("postgres", dataSourceName)
 
 		if err != nil {
